@@ -16,7 +16,14 @@ public class Board {
     
     public Board(String name) {
         this.boardName = name;
-        List firstList = new List("To Do");
+        //List firstList = new List();
+        this.headList = null;
+        this.tailList = null;
+    }
+    
+    public Board(String bName, String lName) {
+        this.boardName = bName;
+        List firstList = new List(lName);
         this.headList = firstList;
         this.tailList = firstList;
     }
@@ -32,14 +39,15 @@ public class Board {
     public void addList(List newList) {
         // even though we added a first List when we made the Board, the user may
         //      delete all the List, this if-else accounts for that
-        if (headList == null) {
-            headList = newList;
-            tailList = newList;
+        //List newList = new List(nList.getName());
+        if (this.headList == null) {
+            this.headList = newList;
+            this.tailList = newList;
         }
         else {
-            tailList.setNext(newList);
-            newList.setPrev(tailList);
-            tailList = newList;
+            this.tailList.setNext(newList);
+            newList.setPrev(this.tailList);
+            this.tailList = newList;
         }
     }
     

@@ -16,6 +16,12 @@ public class Card {
     private Card prevCard;
     private Card nextCard;
     
+    public Card() {
+        this.cardText = "";
+        this.nextCard = null;
+        this.prevCard = null;
+    }
+    
     public Card(String text) {
         this.cardText = text;
         this.nextCard = null;

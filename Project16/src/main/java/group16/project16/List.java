@@ -18,9 +18,16 @@ public class List {
     private List nextList;
     private List prevList;
     
+    public List(){
+        this.listName = "";
+        Card firstCard = new Card();
+        headCard = firstCard;
+        tailCard = firstCard;
+    }
+    
     public List(String name){
         this.listName = name;
-        Card firstCard = new Card("Add something...");
+        Card firstCard = new Card();
         headCard = firstCard;
         tailCard = firstCard;
     }
@@ -36,14 +43,16 @@ public class List {
     public void addCard(Card newCard) {
         // even though we added a first card when we made the list, the user may
         //      delete all the cards, this if-else accounts for that
-        if (headCard == null) {
-            headCard = newCard;
-            tailCard = newCard;
+        //Card newCard = new Card(nCard.getText());
+        
+        if (this.headCard == null) {
+            this.headCard = newCard;
+            this.tailCard = newCard;
         }
         else {
-            tailCard.setNext(newCard);
-            newCard.setPrev(tailCard);
-            tailCard = newCard;
+            this.tailCard.setNext(newCard);
+            newCard.setPrev(this.tailCard);
+            this.tailCard = newCard;
         }
     }
     
