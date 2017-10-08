@@ -17,6 +17,7 @@ import java.util.Scanner;
 				System.out.println("Please enter a user name:  ");
 				System.out.println("Hint: Username must be of length 8 with both letters and numbers");
 				userName1 = create.nextLine();
+				userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
 			}
 			return userName1;
 			
