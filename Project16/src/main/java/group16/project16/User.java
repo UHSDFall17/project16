@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+package group16.project16;
+
 	public class User {
 			
 		public static String Name(String userName) { 
