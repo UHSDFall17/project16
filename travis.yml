@@ -1,3 +1,2 @@
 language: java
-script: mvn -f Project16/pom.xml
-mvn clean compile -DskiptTests
+script: mvn -f Project16/pom.xml clean compile -DskiptTests
