@@ -111,4 +111,30 @@ public class List {
     public List getPrev() {
         return this.prevList;
     }
+    
+    public void printList() {
+        if (this.listName == null) {
+            System.out.println("There was a problem retrieving your List...");
+            return; // trying to catch bad calls to printList()
+        }
+        // when printList() is called it prints the List name and all of its Cards to console
+        System.out.println("********************************");
+        System.out.println("********************************");
+        System.out.println("List: " + this.listName);
+        System.out.println("********************************");
+        Card printCard = new Card();        // printCard is a Card used to walk through the list
+        printCard = this.headCard;          // printCard starts at headCard, might be null
+        int index = 0;
+        while (printCard != null) {
+            System.out.println(index + ": " + printCard);
+            if (printCard.hasNext()) {
+                printCard = printCard.getNext();
+                index++;
+            }
+            else {
+                break;  // there is not a next Card to print, move forward
+            }
+        }
+        System.out.println("********* End of List *********");
+    }
 }
