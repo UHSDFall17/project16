@@ -19,6 +19,10 @@ public class ConsoleVersion {
         printWelcome();
         // log in
         String username = User.loginSequence();
+        if (username.equals("Invalid_Login")) {
+            System.out.println("Unable to log in properly. Terminating program.");
+            System.exit(0);
+        }
         // load data
         Board rootBoard = null;             // rootBoard is the user's Board. Called 'root' for when we expand Board class to allow more Boards per user.
         if ((rootBoard = loadData(username)) != null) {
@@ -31,6 +35,8 @@ public class ConsoleVersion {
             System.out.println("");
         }
         // navigation menu with option to add/edit Cards and Lists. Also to include saveData() option once available.
+        rootBoard.printBoard();
+        //boardMenu();
         
         // exit sequence with option to saveData() 
         
@@ -106,6 +112,10 @@ public class ConsoleVersion {
             System.out.println("Error reading file '"+ userDataFile + "'");                  
             // Or we could just do this: 
             // ex.printStackTrace();
+        }
+        if (newBoard == null) {
+            //no boards were found in the save file, so we need to create a blank one
+            newBoard = new Board("First Board (default name)");
         }
         return newBoard;
     }
