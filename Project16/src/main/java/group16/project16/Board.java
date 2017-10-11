@@ -75,4 +75,29 @@ public class Board {
         // now oldList is no longer in the linked list
     }
     
+    public void printBoard() {
+        if (this.boardName == null) {
+            System.out.println("There was a problem retrieving your Board...");
+            return; // trying to catch bad calls to printList()
+        }
+        // when printList() is called it prints the List name and all of its Cards to console
+        System.out.println("********************************");
+        System.out.println("********************************");
+        System.out.println("Board: " + this.boardName);
+        System.out.println("********************************");
+        List printList = null;        // printList is a List used to walk through the Board
+        printList = this.headList;          // printList starts at headList, might be null
+        int index = 0;
+        while (printList != null) {
+            System.out.println(index + ": " + printList);
+            if (printList.hasNext()) {
+                printList = printList.getNext();
+                index++;
+            }
+            else {
+                break;  // there is not a next List to print, move forward
+            }
+        }
+        System.out.println("********* End of Board *********");
+    }
 }
