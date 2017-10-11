@@ -141,7 +141,20 @@ public class User {
                 bw.write(content);
                 System.out.println("User addded successfully!");
                 System.out.println("You are now logged in");
-                return userName;
+                // also need to create a save file for the new user
+                try {
+                    String saveFileName = "User." + userName + ".txt";
+                    File file = new File(saveFileName);
+                    FileWriter saveFile;
+                    saveFile = new FileWriter(file);
+                    return userName;
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                
+                }
             } 
             catch (IOException e) {
                 e.printStackTrace();
@@ -156,7 +169,7 @@ public class User {
                 catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }
+            }   
         }
         else if (response.equalsIgnoreCase("y")) {
             // returning user login sequence
