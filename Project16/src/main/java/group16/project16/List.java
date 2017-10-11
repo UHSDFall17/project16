@@ -122,7 +122,7 @@ public class List {
         System.out.println("********************************");
         System.out.println("List: " + this.listName);
         System.out.println("********************************");
-        Card printCard = new Card();        // printCard is a Card used to walk through the list
+        Card printCard = null;        // printCard is a Card used to walk through the list
         printCard = this.headCard;          // printCard starts at headCard, might be null
         int index = 0;
         while (printCard != null) {
