@@ -18,7 +18,7 @@ public class ConsoleVersion {
         // welcome
         printWelcome();
         // log in
-        String username = loginSequence();
+        String username = User.loginSequence();
         // load data
         Board rootBoard = null;             // rootBoard is the user's Board. Called 'root' for when we expand Board class to allow more Boards per user.
         if ((rootBoard = loadData(username)) != null) {
@@ -42,15 +42,14 @@ public class ConsoleVersion {
         System.out.println("*********************");
     }
     
-    public static String loginSequence() {
+    /*public static String loginSequence() {
         //for testing purposes, will be replaced with a password login with file verification
         //***We need to include a new user setup at login. 
         //   This should include creation of the user save file. 
         //   loadData() will not work if there is no user save file in the folder.
-        System.out.println("Please enter a user name:  ");
-        String username = consoleIO.next();
+        
         return username;
-    }
+    }*/
     
     public static Board loadData(String username) {
         // ***username should be of type User, probably
