@@ -12,52 +12,38 @@ import java.io.*;
  * @author ryan, justin, and chris
  */
 public class ConsoleVersion {
-    private static Scanner consoleIO = new Scanner(System.in);
+    //private static Scanner consoleIO = new Scanner(System.in);
     
     public static void main(String args[]) {
         // welcome
         printWelcome();
         // log in
-        String username = User.loginSequence();
-        if (username.equals("Invalid_Login")) {
+        String userName = User.loginSequence();
+        if (userName.equals("Invalid_Login")) {
             System.out.println("Unable to log in properly. Terminating program.");
             System.exit(0);
         }
         // load data
         Board rootBoard = null;             // rootBoard is the user's Board. Called 'root' for when we expand Board class to allow more Boards per user.
-        if ((rootBoard = loadData(username)) != null) {
-            // loaded data successfully :)
-            // you can use Board rootBoard to navigate the user's Lists and subsequent Cards
-            
-        }
-        else {
-            // load unsuccessful :(
-            System.out.println("");
+        if ((rootBoard = loadData(userName)) == null) {
+            // unsuccessful load, exit
+            System.out.println("Load unsuccessful... Goodbye.");
+            System.exit(0);
         }
         // navigation menu with option to add/edit Cards and Lists. Also to include saveData() option once available.
-        rootBoard.printBoard();
-        //boardMenu();
+        navigationMenu(rootBoard);
         
         // exit sequence with option to saveData() 
-        
+        exitSequence(userName);
     }
     
-    public static void printWelcome() {
+    private static void printWelcome() {
         System.out.println("*********************");
         System.out.println("Welcome to Project16!");
         System.out.println("*********************");
     }
     
-    /*public static String loginSequence() {
-        //for testing purposes, will be replaced with a password login with file verification
-        //***We need to include a new user setup at login. 
-        //   This should include creation of the user save file. 
-        //   loadData() will not work if there is no user save file in the folder.
-        
-        return username;
-    }*/
-    
-    public static Board loadData(String username) {
+    private static Board loadData(String username) {
         // ***username should be of type User, probably
         // loadData() loads data from file "User.<username>.txt" located in the same folder as the app
         // ***Would be a good idea to save as not a .txt and also encryption, if time allows
@@ -78,9 +64,6 @@ public class ConsoleVersion {
                     // assume we are dealing with a new Board
                     if ((nextLine = buffReader.readLine()) != null) {
                         newBoard = new Board(nextLine);
-                        // TEST PRINT >>> DELETE BEFORE RELEASE <<<
-                        //System.out.println("*NEW BOARD*");
-                        //System.out.println(newBoard.getName());
                     }
                 }
                 else if (nextLine.equals("%*%NEWLIST%*%")) {
@@ -88,18 +71,12 @@ public class ConsoleVersion {
                     if ((nextLine = buffReader.readLine()) != null) {
                         newList = new List(nextLine);
                         newBoard.addList(newList);
-                        // TEST PRINT >>> DELETE BEFORE RELEASE <<<
-                        //System.out.println("*NEW LIST*");
-                        //System.out.println(newList.getName());
                     }
                 }
                 else {
                     // probably a Card
                     newCard = new Card(nextLine);
                     newList.addCard(newCard);
-                    // TEST PRINT >>> DELETE BEFORE RELEASE <<<
-                    //System.out.println("*NEW CARD*");
-                    //System.out.println(newCard.getText());
                 }
             }
             
@@ -120,11 +97,26 @@ public class ConsoleVersion {
         return newBoard;
     }
     
-    /*public static boolean saveData(String username) {
+    private static boolean saveData(String username) {
         // userName should be of type User, probably
         // saves data to file named "User.<username>.txt"
         //***Should probably save to not a .txt and also encrypt
         // if successful, return true;
-        // else, return false;
-    }*/
+        // else, 
+        return false;
+    }
+    
+    private static void navigationMenu(Board rootBoard) {
+        // print user's Board
+        rootBoard.printBoard();
+        // ask user what they want to do next
+    }
+    
+    private static void exitSequence(String userName) {
+        // offer to save work before exiting
+        System.out.println("Would you like to save your work before exitting?");
+        // if yes, saveData(userName);
+        // else, continue...
+        // say good bye and shut things down
+    }
 }
