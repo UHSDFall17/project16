@@ -9,7 +9,7 @@ import java.io.*;
 /**
  *  This program is used to test data structures and act as a stepping stone to
  *      the eventual GUI version.
- * @author ryan, justin, and chris
+ * @author ryan, zengye, and chris
  */
 public class ConsoleVersion {
     //private static Scanner consoleIO = new Scanner(System.in);
