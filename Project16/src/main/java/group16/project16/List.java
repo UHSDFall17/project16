@@ -80,6 +80,14 @@ public class List {
         // now oldCard is no longer in the linked list
     }
     
+    public Card getHead() {
+        return this.headCard;
+    }
+    
+    public Card getTail() {
+        return this.tailCard;
+    }
+    
     public void setNext(List nList) {
         this.nextList = nList;
     }
@@ -137,4 +145,5 @@ public class List {
         }
         System.out.println("********* End of List *********");
     }
+   
 }
