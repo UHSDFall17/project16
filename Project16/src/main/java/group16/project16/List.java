@@ -18,29 +18,29 @@ public class List {
     private List nextList;
     private List prevList;
     
-    public List(){
+    List(){
         this.listName = "";
         Card firstCard = new Card();
         headCard = firstCard;
         tailCard = firstCard;
     }
     
-    public List(String name){
+    List(String name){
         this.listName = name;
         Card firstCard = new Card();
         headCard = firstCard;
         tailCard = firstCard;
     }
     
-    public String getName() {
+    String getName() {
         return this.listName;
     }
     
-    public void editName(String newName) {
+    void editName(String newName) {
         this.listName = newName;
     }
     
-    public void addCard(Card newCard) {
+    void addCard(Card newCard) {
         // even though we added a first card when we made the list, the user may
         //      delete all the cards, this if-else accounts for that
         //Card newCard = new Card(nCard.getText());
@@ -56,7 +56,7 @@ public class List {
         }
     }
     
-    public void removeCard(Card oldCard) {
+    void removeCard(Card oldCard) {
         // check if headCard
         if (oldCard != headCard) {
             // set the card before oldCard's next card to the one after oldCard
@@ -80,23 +80,23 @@ public class List {
         // now oldCard is no longer in the linked list
     }
     
-    public Card getHead() {
+    Card getHead() {
         return this.headCard;
     }
     
-    public Card getTail() {
+    Card getTail() {
         return this.tailCard;
     }
     
-    public void setNext(List nList) {
+    void setNext(List nList) {
         this.nextList = nList;
     }
     
-    public void setPrev(List pList) {
+    void setPrev(List pList) {
         this.prevList = pList;
     }
      
-    public boolean hasNext() {
+    boolean hasNext() {
         if (this.nextList != null) {
             return true;
         }
@@ -104,11 +104,11 @@ public class List {
             return false;
     }
     
-    public List getNext() {
+    List getNext() {
         return this.nextList;
     }
     
-    public boolean hasPrev() {
+    boolean hasPrev() {
         if (this.prevList != null) {
             return true;
         }
@@ -116,34 +116,8 @@ public class List {
             return false;
     }
     
-    public List getPrev() {
+    List getPrev() {
         return this.prevList;
-    }
-    
-    public void printList() {
-        if (this.listName == null) {
-            System.out.println("There was a problem retrieving your List...");
-            return; // trying to catch bad calls to printList()
-        }
-        // when printList() is called it prints the List name and all of its Cards to console
-        System.out.println("********************************");
-        System.out.println("********************************");
-        System.out.println("List: " + this.listName);
-        System.out.println("********************************");
-        Card printCard = null;        // printCard is a Card used to walk through the list
-        printCard = this.headCard;          // printCard starts at headCard, might be null
-        int index = 0;
-        while (printCard != null) {
-            System.out.println(index + ": " + printCard);
-            if (printCard.hasNext()) {
-                printCard = printCard.getNext();
-                index++;
-            }
-            else {
-                break;  // there is not a next Card to print, move forward
-            }
-        }
-        System.out.println("********* End of List *********");
     }
    
 }
