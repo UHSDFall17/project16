@@ -108,7 +108,6 @@ public class ConsoleVersion {
     
     private static void navigationMenu(Board rootBoard) {
         // print user's Board
-        rootBoard.printBoard();
         // ask user what they want to do next
     }
     
