@@ -16,35 +16,35 @@ public class Card {
     private Card prevCard;
     private Card nextCard;
     
-    public Card() {
+    Card() {
         this.cardText = "";
         this.nextCard = null;
         this.prevCard = null;
     }
     
-    public Card(String text) {
+    Card(String text) {
         this.cardText = text;
         this.nextCard = null;
         this.prevCard = null;
     }
     
-    public String getText() {
+    String getText() {
         return this.cardText;
     }
     
-    public void changeText(String newText) {
+    void changeText(String newText) {
         this.cardText = newText;
     }
     
-    public void setNext(Card nCard) {
+    void setNext(Card nCard) {
         this.nextCard = nCard;
     }
     
-    public void setPrev(Card pCard) {
+    void setPrev(Card pCard) {
         this.prevCard = pCard;
     }
      
-    public boolean hasNext() {
+    boolean hasNext() {
         if (this.nextCard != null) {
             return true;
         }
@@ -52,11 +52,11 @@ public class Card {
             return false;
     }
     
-    public Card getNext() {
+    Card getNext() {
         return this.nextCard;
     }
     
-    public boolean hasPrev() {
+    boolean hasPrev() {
         if (this.prevCard != null) {
             return true;
         }
@@ -64,7 +64,7 @@ public class Card {
             return false;
     }
     
-    public Card getPrev() {
+    Card getPrev() {
         return this.prevCard;
     }
 }
