@@ -69,7 +69,7 @@ public class CardTest {
         Card nCard = new Card();
         Card instance = new Card();
         instance.setNext(nCard);
-        Card result = instance.getNext();
+        Card result = (Card)instance.getNext();
         assertEquals(nCard, result);
     }
 
@@ -82,7 +82,7 @@ public class CardTest {
         Card pCard = new Card();
         Card instance = new Card();
         instance.setPrev(pCard);
-        Card result = instance.getPrev();
+        Card result = (Card)instance.getPrev();
         assertEquals(pCard, result);
     }
 
@@ -106,7 +106,7 @@ public class CardTest {
         System.out.println("getNext");
         Card instance = new Card();
         Card expResult = null;
-        Card result = instance.getNext();
+        Card result = (Card)instance.getNext();
         assertEquals(expResult, result);
     }
 
@@ -130,7 +130,7 @@ public class CardTest {
         System.out.println("getPrev");
         Card instance = new Card();
         Card expResult = null;
-        Card result = instance.getPrev();
+        Card result = (Card)instance.getPrev();
         assertEquals(expResult, result);
     }
     
