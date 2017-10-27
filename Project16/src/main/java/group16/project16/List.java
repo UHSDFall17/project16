@@ -11,14 +11,13 @@ package group16.project16;
  * Lists are double-linked lists of Card. 
  *  Lists also act like nodes for the double-linked lists of Boards.
  */
-public class List {
+public class List extends Node{
     private String listName;
     private Card headCard;
     private Card tailCard;
-    private List nextList;
-    private List prevList;
     
     List(){
+        super();        // call to superClass constructor for Node
         this.listName = "";
         Card firstCard = new Card();
         headCard = firstCard;
@@ -64,7 +63,7 @@ public class List {
         }
         else {
             // oldCard == headCard 
-            headCard = oldCard.getNext();
+            headCard = (Card)oldCard.getNext();
             headCard.setPrev(null);
         }
         // check if tailcard
@@ -74,7 +73,7 @@ public class List {
         }
         else {
             // oldCard == tailCard
-            tailCard = oldCard.getPrev();
+            tailCard = (Card)oldCard.getPrev();
             tailCard.setNext(null);
         }
         // now oldCard is no longer in the linked list
@@ -87,37 +86,4 @@ public class List {
     Card getTail() {
         return this.tailCard;
     }
-    
-    void setNext(List nList) {
-        this.nextList = nList;
-    }
-    
-    void setPrev(List pList) {
-        this.prevList = pList;
-    }
-     
-    boolean hasNext() {
-        if (this.nextList != null) {
-            return true;
-        }
-        else 
-            return false;
-    }
-    
-    List getNext() {
-        return this.nextList;
-    }
-    
-    boolean hasPrev() {
-        if (this.prevList != null) {
-            return true;
-        }
-        else
-            return false;
-    }
-    
-    List getPrev() {
-        return this.prevList;
-    }
-   
 }
