@@ -59,7 +59,7 @@ public class Board {
         }
         else {
             // oldList == headList 
-            headList = oldList.getNext();
+            headList = (List)oldList.getNext();
             headList.setPrev(null);
         }
         // check if tailList
@@ -69,7 +69,7 @@ public class Board {
         }
         else {
             // oldList == tailList
-            tailList = oldList.getPrev();
+            tailList = (List)oldList.getPrev();
             tailList.setNext(null);
         }
         // now oldList is no longer in the linked list
