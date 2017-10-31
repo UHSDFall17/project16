@@ -1,4 +1,5 @@
 package group16.project16;
+import java.util.Date;
 
 /**
  * Description:
@@ -9,11 +10,42 @@ package group16.project16;
  */
 
 public class Task extends Card {
+/*
     // Class attributes are private
+    private Date dueDate;
+    private User assignedBy;
+    private User assignedTo;
     
-    // Constructor is public. Include a call to the superclass (Card) in the constructor.
+    Task() {
+        super();                    // call to superClass (Card)
+        this.dueDate = null;
+        this.assignedBy = null;
+        this.assignedTo = null;
+    }
     
     // Include methods for getting and setting due date. 
-       
+    void setDate(Date newDate) {
+        
+    }   
+    
+    Date getDate() { 
+        
+    }
     // Include any other methods you think will be of help. Remember we are not doing anything System.out.print() unless the professor changes his mind.
+    User getAssignedBy() {
+    
+    }
+    
+    void setAssignedBy(User newBy) {
+    
+    }
+    
+    User getAssignedTo() { 
+    
+    }
+    
+    void setAssignedTo(User newTo) [
+    
+    }
+*/
 }
