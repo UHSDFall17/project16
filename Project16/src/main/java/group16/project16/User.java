@@ -9,7 +9,39 @@ import java.util.Scanner;
 
 
 public class User {
-			
+/*		
+    private String name;
+    private String password;
+    private Board rootBoard;    // root Board belonging to each User. It points to other Boards belonging to the User.
+    
+    User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+    
+    void setRootBoard(Board newRootBoard) {
+        
+    }
+    
+    Board getRootBoard() {
+        // Keep things simple. This method is sufficent.
+        return this.rootBoard;
+    }
+    
+    void changeRootBoard(Board newRootBoard) {
+        
+    }
+    
+    void changePassword(String newPassword) {
+        
+    }
+    
+    boolean verifyPassword(String passProvided) {
+        // like logging in. See if the password provided matches the one for this user. Maybe include a counter to prevent too many attempts?
+    }
+    
+    // add anything else you think would be useful. 
+*/    
     public static String Name() { 
 	@SuppressWarnings("resource")
 	Scanner create = new Scanner(System.in);
