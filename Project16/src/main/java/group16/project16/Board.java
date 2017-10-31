@@ -9,7 +9,7 @@ package group16.project16;
  * @author ryan
  * 
  */
-public class Board {
+public class Board extends Node {
     private String boardName;
     private List headList;
     private List tailList;
