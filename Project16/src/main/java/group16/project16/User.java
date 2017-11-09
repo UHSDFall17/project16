@@ -41,7 +41,15 @@ public class User {
     }
     
     // add anything else you think would be useful. 
-*/    
+*/  
+    public static void userNameReq(){
+            System.out.println("Please enter a user name:  ");
+            System.out.println("Hint: Username must be of length 8 with both letters and numbers");
+    }
+    public static void passwordReq(){
+            System.out.println("Please enter a password:  ");
+            System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
+    }
     public static String Name() { 
 	@SuppressWarnings("resource")
 	Scanner create = new Scanner(System.in);
@@ -49,8 +57,7 @@ public class User {
 	String userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
 	while (userName1.matches(userValidate) == false){
             System.out.println("Invalid username...please try again");
-            System.out.println("Please enter a user name:  ");
-            System.out.println("Hint: Username must be of length 8 with both letters and numbers");
+            userNameReq();
             userName1 = create.nextLine();
             userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
 	}
@@ -58,8 +65,8 @@ public class User {
     }
     
     public static String newUserCheck(String userName) { 
-	//File file = new File("C:\\Users\\ccupp\\Desktop\\test.txt");
-        File file = new File("UsersData.txt");
+        File file = new File("C:\\Users\\chris.PIPERMORGAN\\Desktop\\UsersData.txt"); 
+        //File file = new File("UsersData.txt");
 	Scanner scanner;
 	try {
 	    scanner = new Scanner(file).useDelimiter( " ");
@@ -67,17 +74,15 @@ public class User {
 	        final String lineFromFile = scanner.nextLine();
 	        if (lineFromFile.contains(userName)) {
                     System.out.println(userName + " is already in use, please try again");
-	            System.out.println("Please enter a user name:  ");
-                    System.out.println("Hint: Username must be of length 8 with both letters and numbers");
+	            userNameReq();
                     @SuppressWarnings("resource")
                     Scanner create = new Scanner(System.in);
                     userName = create.nextLine();
                     String userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
                     while (userName.matches(userValidate) == false){
 			System.out.println("Invalid username...please try again");
-			System.out.println("Please enter a user name:  ");
-			System.out.println("Hint: Username must be of length 8 with both letters and numbers");
-			@SuppressWarnings("resource")
+			userNameReq();
+                        @SuppressWarnings("resource")
 			Scanner create1 = new Scanner(System.in);
 			userName = create1.nextLine();
                     }
@@ -94,8 +99,7 @@ public class User {
     } 
 
     public static boolean userCheck(String userName, String password) { 
-	//File file = new File("C:\\Users\\ccupp\\Desktop\\test.txt");
-        File file = new File("UsersData.txt");
+    File file = new File("UsersData.txt");
 	Scanner fscanner;
 	try {
             int tries = 0;
@@ -113,11 +117,9 @@ public class User {
                     }
                 }
                 System.out.println("Username and Password do not match! Please try again.");
-                System.out.println("Please enter a user name:  ");
-                System.out.println("Hint: Username must be of length 8 with both letters and numbers");
+                userNameReq();
                 userName = Name();
-                System.out.println("Please enter a password:  ");
-                System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
+                passwordReq();
                 password = Password();
             }
             System.out.println("Too many failed attempts!!! Terminating program...");
@@ -137,14 +139,12 @@ public class User {
 			
 	while (userPassword2.matches(userValidate) == false){
             System.out.println("Invalid password...please try again");
-            System.out.println("Please enter a password:  ");
-            System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
+            passwordReq();
             userPassword2 = create.nextLine();
 	}
 	return userPassword2;	
     }
     
-    //private static final String FILENAME = "C:\\Users\\ccupp\\Desktop\\test.txt";
     private static final String FILENAME = "UsersData.txt";
     
     public static String loginSequence() {
@@ -154,12 +154,10 @@ public class User {
         String response = loginScanner.nextLine();
         if (response.equalsIgnoreCase("n")) {
             // new user login sequence (set up new user)
-            System.out.println("Please enter a user name:  ");
-            System.out.println("Hint: Username must be of length 8 with both letters and numbers");
+            userNameReq();
             String userName = Name();
             String userName2 = newUserCheck(userName);
-            System.out.println("Please enter a password:  ");
-            System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
+            passwordReq();
             String userPassword = Password();
             
             // now write the new user info to the UsersData file
@@ -205,11 +203,9 @@ public class User {
         }
         else if (response.equalsIgnoreCase("y")) {
             // returning user login sequence
-            System.out.println("Please enter a user name:  ");
-            System.out.println("Hint: Username must be of length 8 with both letters and numbers");
+            userNameReq();
             String userName = Name();
-            System.out.println("Please enter a password:  ");
-            System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
+            passwordReq();
             String userPassword = Password();
             if (userCheck(userName, userPassword)) {
                 // if true we have a valid login
