@@ -65,8 +65,7 @@ public class User {
     }
     
     public static String newUserCheck(String userName) { 
-        File file = new File("C:\\Users\\chris.PIPERMORGAN\\Desktop\\UsersData.txt"); 
-        //File file = new File("UsersData.txt");
+        File file = new File("UsersData.txt");
 	Scanner scanner;
 	try {
 	    scanner = new Scanner(file).useDelimiter( " ");
