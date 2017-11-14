@@ -59,6 +59,12 @@ public class Board extends Node {
         }
         else {
             // oldList == headList 
+            if (headList == tailList) {
+                // only one List on this Board and we are removing it
+                headList = null;
+                tailList = null;
+                return;
+            }
             headList = (List)oldList.getNext();
             headList.setPrev(null);
         }
@@ -73,6 +79,14 @@ public class Board extends Node {
             tailList.setNext(null);
         }
         // now oldList is no longer in the linked list
+    }
+    
+    List getHead() {
+        return this.headList;
+    }
+    
+    List getTail() {
+        return this.tailList;
     }
     
 }
