@@ -63,6 +63,11 @@ public class List extends Node{
         }
         else {
             // oldCard == headCard 
+            if (headCard == tailCard) {
+                headCard = null;
+                tailCard = null;
+                return;
+            }
             headCard = (Card)oldCard.getNext();
             headCard.setPrev(null);
         }
