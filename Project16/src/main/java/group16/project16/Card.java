@@ -17,12 +17,13 @@ public class Card extends Node{
     
     Card() {
         super();
-        this.cardText = "";
-        this.completeStatus = false;
+        cardText = "";
+        completeStatus = false;
     }
     
     Card(String text) {
-        this.cardText = text;
+        super();
+        cardText = text;
     }
     
     String getText() {
