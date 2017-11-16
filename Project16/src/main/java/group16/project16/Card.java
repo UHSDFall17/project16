@@ -13,10 +13,12 @@ package group16.project16;
  */
 public class Card extends Node{
     private String cardText;
+    private boolean completeStatus;
     
     Card() {
         super();
         this.cardText = "";
+        this.completeStatus = false;
     }
     
     Card(String text) {
@@ -29,5 +31,13 @@ public class Card extends Node{
     
     void changeText(String newText) {
         this.cardText = newText;
+    }
+    
+    boolean getStatus() {
+        return this.completeStatus;
+    }
+    
+    void toggleStatus() {
+        this.completeStatus = !this.completeStatus;
     }
 }
