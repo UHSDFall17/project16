@@ -9,18 +9,16 @@ import java.util.Scanner;
 
 
 public class User {
-/*		
+		
     private String name;
     private String password;
     private Board rootBoard;    // root Board belonging to each User. It points to other Boards belonging to the User.
     
     User(String name, String password) {
+        // a new User may not be created without a username and password
         this.name = name;
         this.password = password;
-    }
-    
-    void setRootBoard(Board newRootBoard) {
-        
+        this.rootBoard = null;
     }
     
     Board getRootBoard() {
@@ -28,20 +26,58 @@ public class User {
         return this.rootBoard;
     }
     
-    void changeRootBoard(Board newRootBoard) {
-        
+    void addBoard(Board newBoard) {
+        if (this.rootBoard == null) {
+            this.rootBoard = newBoard;
+        }
+        else {
+            Board tempBoard = this.rootBoard;
+            while (tempBoard.hasNext()) {
+                tempBoard = (Board)tempBoard.getNext();
+            }
+            // tempBoard is pointing to a board without a next
+            tempBoard.setNext(newBoard);
+        } 
     }
     
-    void changePassword(String newPassword) {
-        
+/*  can't figure this one out at the moment
+    void removeBoard(Board oldBoard) {
+        if (this.rootBoard.equals(oldBoard)) {
+            this.rootBoard = (Board)oldBoard.getNext();
+        }
+        else {
+            Board tempBoard = this.rootBoard;
+            while (!((tempBoard.getNext()).equals(oldBoard))) {
+                if (tempBoard.hasNext()) {
+                    tempBoard = (Board)tempBoard.getNext();
+                }
+                else {  // tempBoard does not have a next and oldBoard was not found
+                    return;     // do nothing more
+                }
+            }
+            // tempBoard is pointing to oldBoard
+            
+            (Board)tempBoard.getPrev() = (Board)tempBoard.getNext();
+        }
+    }
+*/
+    boolean changePassword(String oldPassProvided, String newPassword) {
+        if (oldPassProvided.equals(this.password)) {
+            this.password = newPassword;
+            return true;
+        }
+        else
+            return false;
     }
     
     boolean verifyPassword(String passProvided) {
         // like logging in. See if the password provided matches the one for this user. Maybe include a counter to prevent too many attempts?
+        if (passProvided.equals(this.password)) 
+            return true;
+        else
+            return false;
     }
     
-    // add anything else you think would be useful. 
-*/  
     public static void userNameReq(){
             System.out.println("Please enter a user name:  ");
             System.out.println("Hint: Username must be of length 8 with both letters and numbers");
