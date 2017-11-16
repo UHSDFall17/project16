@@ -18,14 +18,15 @@ public class List extends Node{
     
     List(){
         super();        // call to superClass constructor for Node
-        this.listName = "";
+        listName = "";
         Card firstCard = new Card();
         headCard = firstCard;
         tailCard = firstCard;
     }
     
     List(String name){
-        this.listName = name;
+        super();
+        listName = name;
         Card firstCard = new Card();
         headCard = firstCard;
         tailCard = firstCard;
