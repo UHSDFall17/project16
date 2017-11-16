@@ -21,13 +21,6 @@ public class Board extends Node {
         this.tailList = null;
     }
     
-    Board(String bName, String lName) {
-        this.boardName = bName;
-        List firstList = new List(lName);
-        this.headList = firstList;
-        this.tailList = firstList;
-    }
-    
     String getName() {
         return this.boardName;
     }
