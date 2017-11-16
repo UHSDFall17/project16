@@ -14,10 +14,10 @@ public class User {
     private String password;
     private Board rootBoard;    // root Board belonging to each User. It points to other Boards belonging to the User.
     
-    User(String name, String password) {
+    User(String newName, String newPassword) {
         // a new User may not be created without a username and password
-        this.name = name;
-        this.password = password;
+        this.name = newName;
+        this.password = newPassword;
         this.rootBoard = null;
     }
     
