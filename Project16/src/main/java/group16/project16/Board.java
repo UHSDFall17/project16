@@ -15,10 +15,11 @@ public class Board extends Node {
     private List tailList;
     
     Board(String name) {
-        this.boardName = name;
+        super();
+        boardName = name;
         //List firstList = new List();
-        this.headList = null;
-        this.tailList = null;
+        headList = null;
+        tailList = null;
     }
     
     String getName() {
