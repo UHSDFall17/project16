@@ -1,8 +1,11 @@
 package group16.project16;
 
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -258,4 +261,58 @@ public class User {
         // if we reached this point, something didn't work
         return "Invalid_Login";
     }
+    
+    void loadData() {
+        // loadData() loads data from file "User.<username>.txt" located in the same folder as the app
+        // ***Would be a good idea to save as not a .txt and also encryption, if time allows
+        String userDataFile = "User.";
+        userDataFile += this.name;
+        userDataFile += ".txt";
+        String nextLine = "";
+        Board newBoard = null;
+        List newList = null;
+        Card newCard = null;
+        
+        try {
+            FileReader fileReader = new FileReader(userDataFile);
+            BufferedReader buffReader = new BufferedReader(fileReader);
+            
+            while((nextLine = buffReader.readLine()) != null) {
+                if (nextLine.equals("%*%NEWBOARD%*%")) {
+                    // assume we are dealing with a new Board
+                    if ((nextLine = buffReader.readLine()) != null) {
+                        newBoard = new Board(nextLine);
+                        this.addBoard(newBoard);
+                    }
+                }
+                else if (nextLine.equals("%*%NEWLIST%*%")) {
+                    // assume we are dealing with a new List
+                    if ((nextLine = buffReader.readLine()) != null) {
+                        newList = new List(nextLine);
+                        newBoard.addList(newList);
+                    }
+                }
+                else {
+                    // probably a Card
+                    newCard = new Card(nextLine);
+                    newList.addCard(newCard);
+                }
+            }
+            
+            buffReader.close();
+        }  
+        catch(FileNotFoundException ex) {
+            System.out.println("Unable to open file '" + userDataFile + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println("Error reading file '"+ userDataFile + "'");                  
+            // Or we could just do this: 
+            // ex.printStackTrace();
+        }
+        if (newBoard == null) {
+            //no boards were found in the save file, so we need to create a blank one
+            newBoard = new Board("First Board (default name)");
+        }
+    }
+    
 }
