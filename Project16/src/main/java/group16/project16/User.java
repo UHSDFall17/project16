@@ -30,17 +30,22 @@ public class User {
     }
     
     void addBoard(Board newBoard) {
-        if (this.rootBoard == null) {
-            this.rootBoard = newBoard;
-        }
-        else {
-            Board tempBoard = this.rootBoard;
-            while (tempBoard.hasNext()) {
-                tempBoard = (Board)tempBoard.getNext();
+        try {
+            if (this.rootBoard == null) {
+                this.rootBoard = newBoard;
             }
-            // tempBoard is pointing to a board without a next
-            tempBoard.setNext(newBoard);
-        } 
+            else {
+                Board tempBoard = this.rootBoard;
+                while (tempBoard.hasNext()) {
+                    tempBoard = (Board)tempBoard.getNext();
+                }
+                // tempBoard is pointing to a board without a next
+                tempBoard.setNext(newBoard);
+            }
+        }
+        catch (NullPointerException e) {
+            
+        }
     }
         
     void removeBoard(Board oldBoard) {
@@ -269,9 +274,9 @@ public class User {
         userDataFile += this.name;
         userDataFile += ".txt";
         String nextLine = "";
-        Board newBoard = null;
-        List newList = null;
-        Card newCard = null;
+        Board currBoard = null;
+        List currList = null;
+        Card currCard = null;
         
         try {
             FileReader fileReader = new FileReader(userDataFile);
@@ -281,24 +286,33 @@ public class User {
                 if (nextLine.equals("%*%NEWBOARD%*%")) {
                     // assume we are dealing with a new Board
                     if ((nextLine = buffReader.readLine()) != null) {
-                        newBoard = new Board(nextLine);
-                        this.addBoard(newBoard);
+                        currBoard = new Board(nextLine);
+                        this.addBoard(currBoard);
                     }
                 }
                 else if (nextLine.equals("%*%NEWLIST%*%")) {
                     // assume we are dealing with a new List
                     if ((nextLine = buffReader.readLine()) != null) {
-                        newList = new List(nextLine);
-                        newBoard.addList(newList);
+                        currList = new List(nextLine);
+                        if (currBoard != null) {
+                            currBoard.addList(currList);
+                        }
+                        else {
+                            // there is no board to add this to. What do?
+                        }
                     }
                 }
                 else {
                     // probably a Card
-                    newCard = new Card(nextLine);
-                    newList.addCard(newCard);
+                    currCard = new Card(nextLine);
+                    if (currBoard != null && currList != null) {
+                            currList.addCard(currCard);
+                        }
+                        else {
+                            // there is no board/list to add this to. What do?
+                        }                   
                 }
             }
-            
             buffReader.close();
         }  
         catch(FileNotFoundException ex) {
@@ -309,9 +323,10 @@ public class User {
             // Or we could just do this: 
             // ex.printStackTrace();
         }
-        if (newBoard == null) {
+        if (currBoard == null) {
             //no boards were found in the save file, so we need to create a blank one
-            newBoard = new Board("First Board (default name)");
+            currBoard = new Board("First Board (default name)");
+            this.addBoard(currBoard);
         }
     }
     
