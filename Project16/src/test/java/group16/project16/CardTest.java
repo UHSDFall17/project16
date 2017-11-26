@@ -57,4 +57,22 @@ public class CardTest {
         assertNotEquals(originalText, instance.getText());
     }
     
+    /**
+     * Test of getStatus method, of class Card.
+     */
+    @Test
+    public void testGetStatus() {
+        Card instance = new Card();
+        assertEquals(instance.getStatus(), false);
+    }
+    
+    /**
+     * Test of toggleStatus method, of class Card.
+     */
+    @Test
+    public void testToggleStatus() {
+        Card instance = new Card();
+        instance.toggleStatus();
+        assertEquals(instance.getStatus(), true);
+    }
 }
