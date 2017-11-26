@@ -39,11 +39,10 @@ public class User {
             tempBoard.setNext(newBoard);
         } 
     }
-    
-/*  can't figure this one out at the moment
+        
     void removeBoard(Board oldBoard) {
         if (this.rootBoard.equals(oldBoard)) {
-            this.rootBoard = (Board)oldBoard.getNext();
+            this.rootBoard = (Board)this.rootBoard.getNext();
         }
         else {
             Board tempBoard = this.rootBoard;
@@ -56,11 +55,11 @@ public class User {
                 }
             }
             // tempBoard is pointing to oldBoard
-            
-            (Board)tempBoard.getPrev() = (Board)tempBoard.getNext();
+            tempBoard = (Board)tempBoard.getPrev(); 
+            tempBoard.setNext(tempBoard.getNext().getNext());
         }
     }
-*/
+
     boolean changePassword(String oldPassProvided, String newPassword) {
         if (oldPassProvided.equals(this.password)) {
             this.password = newPassword;
