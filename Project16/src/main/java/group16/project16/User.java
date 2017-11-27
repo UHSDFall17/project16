@@ -14,14 +14,16 @@ import java.util.Scanner;
 public class User {
 		
     private String name;
-    private Board rootBoard;    
-    private static User singleton = null;                   // singleton initializes as null
+    private Board rootBoard;
+    //private Corporation myCorp;
+    private static User singleton = new User();
     private static final String FILENAME = "UsersData.txt"; // where User login data is stored
     
     private User() {
         // using Singleton design pattern to allow only one User at a time (per instance of application)
         this.name = null;
         this.rootBoard = null;
+        //this.myCorp = null;
     }
     
     public static User getUser() {
@@ -29,11 +31,10 @@ public class User {
     }
     
     public static User UserFactory() {
-        if (singleton == null) {                        // check if singleton is already populated, if not allow a login attempt
+        if (singleton.name == null ) {                  // check if singleton is already populated, if not allow a login attempt
             String uName = loginSequence();             // verifies User credentials and returns the User's name if legitimate
             if (!uName.equals("Invalid_Login")) {       // if we don't get an invalid login
                 // login is valid, finish building instance of singleton User
-                singleton = new User();
                 singleton.name = uName;                 // set the User's name
                 singleton.loadData();                   // attempt to load data for that user
             }
@@ -43,9 +44,10 @@ public class User {
     }
     
     public static void LogOutFactory() {
-        if (singleton != null) {
-            singleton.saveData();   // save exiting User's data to their save file
-            singleton = null;       // set singleton null to remove data from exiting User
+        if (singleton.name != null) {
+            singleton.saveData();           // save exiting User's data to their save file
+            singleton.name = null;          // set singleton.name null indicating it is empty
+            singleton.rootBoard = null;     // set singleton.rootBoard null indicating it is empty
         }
         // if singleton is null we don't have to do anything
     }
@@ -364,7 +366,7 @@ public class User {
     }
     
 
-    private static void saveData() {
+    private void saveData() {
         // Save the data for this User.
         // saveData() saves data to file "User.<username>.txt" located in the same folder as the app
         // saveData() is not static despite use of Singleton because rootBoard belongs to an individual
@@ -378,5 +380,6 @@ public class User {
         Board currBoard = null;
         List currList = null;
         Card currCard = null;
+        
     }
 }
