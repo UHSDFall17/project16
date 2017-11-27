@@ -129,12 +129,14 @@ public class User {
     }
     
     private static String newUserCheck(String userName) { 
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(encryptionKey);
         File file = new File("UsersData.txt");
 	Scanner scanner;
 	try {
 	    scanner = new Scanner(file).useDelimiter( " ");
 	    while (scanner.hasNext()) {
-	        final String lineFromFile = scanner.nextLine();
+	        String lineFromFile = textEncryptor.decrypt(scanner.nextLine());   // deccrypt text from file
 	        if (lineFromFile.contains(userName)) {
                     System.out.println(userName + " is already in use, please try again");
 	            userNameReq();
@@ -162,14 +164,16 @@ public class User {
     } 
 
     private static boolean userCheck(String userName, String password) { 
-    File file = new File("UsersData.txt");
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(encryptionKey);
+        File file = new File("UsersData.txt");
 	Scanner fscanner;
 	try {
             int tries = 0;
             while (tries++ < 3) {
                 fscanner = new Scanner(file).useDelimiter(" ");
                 while (fscanner.hasNext()) {
-                    final String lineFromFile = fscanner.nextLine();
+                    String lineFromFile = textEncryptor.decrypt(fscanner.nextLine());   // deccrypt text from file
                     String[] splitLine = lineFromFile.split("\\s+");
                     if (splitLine[0].equals(userName)) {
                         // check if password matches found username
@@ -210,6 +214,8 @@ public class User {
     
     private static String loginSequence() {
         @SuppressWarnings("resource")
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(encryptionKey);
 	Scanner loginScanner = new Scanner(System.in);
         System.out.println("Are you a returning user? (Y/n): ");
         String response = loginScanner.nextLine();
@@ -220,16 +226,16 @@ public class User {
             String userName2 = newUserCheck(userName);
             passwordReq();
             String userPassword = Password();
-            
             // now write the new user info to the UsersData file
             BufferedWriter bw = null;
             FileWriter fw = null;
             try {
                 String content = userName2 + " " + userPassword;
+                String contentEncrypt = textEncryptor.encrypt(content);
                 fw = new FileWriter(FILENAME,true);
                 bw = new BufferedWriter(fw);
                 bw.append(System.lineSeparator());
-                bw.write(content);
+                bw.write(contentEncrypt);
                 System.out.println("User addded successfully!");
                 System.out.println("You are now logged in");
                 // also need to create a save file for the new user
