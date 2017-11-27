@@ -15,13 +15,27 @@ public class User {
 		
     private String name;
     private Board rootBoard;    
-    private static User singleton = new User();
-    private static final String FILENAME = "UsersData.txt";
+    private static User singleton = null;                   // singleton initializes as null
+    private static final String FILENAME = "UsersData.txt"; // where User login data is stored
     
     private User() {
         // using Singleton design pattern to allow only one User at a time (per instance of application)
         this.name = null;
         this.rootBoard = null;
+    }
+    
+    public static User UserFactory() {
+        if (singleton == null) {                        // check if singleton is already populated, if not allow a login attempt
+            String uName = loginSequence();             // verifies User credentials and returns the User's name if legitimate
+            if (!uName.equals("Invalid_Login")) {       // if we don't get an invalid login
+                // login is valid, finish building instance of singleton User
+                singleton = new User();
+                singleton.name = uName;                 // set the User's name
+                singleton.loadData();                   // attempt to load data for that user
+            }
+        }
+        // regardless of what happens above we want to return the value of singleton (null or a real User)
+        return singleton;
     }
     
     public static User getUser() {
@@ -261,11 +275,14 @@ public class User {
         return "Invalid_Login";
     }
     
-    private static void loadData() {
+    private void loadData() {
         // loadData() loads data from file "User.<username>.txt" located in the same folder as the app
-        // ***Would be a good idea to save as not a .txt and also encryption, if time allows
+        // loadData() is not static despite use of Singleton because rootBoard belongs to an individual
+        // and not the class. When a User logs out we can set singleton = null instead of deleting 
+        // all the loaded Boards.
+        // ***Would be a good idea to encrypt on save and decrypt on read, if time allows
         String userDataFile = "User.";
-        userDataFile += name;
+        userDataFile += this.name;
         userDataFile += ".txt";
         String nextLine = "";
         Board currBoard = null;
@@ -281,7 +298,7 @@ public class User {
                     // assume we are dealing with a new Board
                     if ((nextLine = buffReader.readLine()) != null) {
                         currBoard = new Board(nextLine);
-                        addBoard(currBoard);
+                        this.addBoard(currBoard);           // add this Board to the User
                     }
                 }
                 else if (nextLine.equals("%*%NEWLIST%*%")) {
@@ -310,9 +327,19 @@ public class User {
             buffReader.close();
         }  
         catch(FileNotFoundException ex) {
-            // no save file found for User so load a blank Board
-            currBoard = new Board("First Board (default name)");
-            addBoard(currBoard);
+            // no save file found for User so create a new one 
+            try {
+                    String saveFileName = "User." + this.name + ".txt";
+                    File file = new File(saveFileName);
+                    FileWriter saveFile;
+                    saveFile = new FileWriter(file);
+                    //no boards were found in the save file, so we need to create a blank one
+                    currBoard = new Board("First Board (default name)");
+                    this.addBoard(currBoard);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
         catch(IOException ex) {
             System.out.println("Error reading file '"+ userDataFile + "'");                  
@@ -322,7 +349,7 @@ public class User {
         if (currBoard == null) {
             //no boards were found in the save file, so we need to create a blank one
             currBoard = new Board("First Board (default name)");
-            addBoard(currBoard);
+            this.addBoard(currBoard);
         }
     }
     
