@@ -14,22 +14,26 @@ import java.util.Scanner;
 public class User {
 		
     private String name;
-    private String password;
-    private Board rootBoard;    // root Board belonging to each User. It points to other Boards belonging to the User.
+    private Board rootBoard;    
+    private static User singleton = new User();
+    private static final String FILENAME = "UsersData.txt";
     
-    User(String newName, String newPassword) {
-        // a new User may not be created without a username and password
-        this.name = newName;
-        this.password = newPassword;
+    private User() {
+        // using Singleton design pattern to allow only one User at a time (per instance of application)
+        this.name = null;
         this.rootBoard = null;
     }
     
-    Board getRootBoard() {
+    public static User getUser() {
+        return singleton;
+    }
+    
+    public Board getRootBoard() {
         // Keep things simple. This method is sufficent.
         return this.rootBoard;
     }
     
-    void addBoard(Board newBoard) {
+    public void addBoard(Board newBoard) {
         try {
             if (this.rootBoard == null) {
                 this.rootBoard = newBoard;
@@ -44,56 +48,48 @@ public class User {
             }
         }
         catch (NullPointerException e) {
-            
+            // This shouldn't happen but it probably will when we least expect it.
+            // As a result of reaching an error, do nothing?
         }
     }
         
-    void removeBoard(Board oldBoard) {
-        if (this.rootBoard.equals(oldBoard)) {
-            this.rootBoard = (Board)this.rootBoard.getNext();
-        }
-        else {
-            Board tempBoard = this.rootBoard;
-            while (!((tempBoard.getNext()).equals(oldBoard))) {
-                if (tempBoard.hasNext()) {
-                    tempBoard = (Board)tempBoard.getNext();
-                }
-                else {  // tempBoard does not have a next and oldBoard was not found
-                    return;     // do nothing more
-                }
+    public void removeBoard(Board oldBoard) {
+        try {
+            if (this.rootBoard.equals(oldBoard)) {
+                this.rootBoard = (Board)this.rootBoard.getNext();
             }
-            // tempBoard is pointing to oldBoard
-            tempBoard = (Board)tempBoard.getPrev(); 
-            tempBoard.setNext(tempBoard.getNext().getNext());
+            else {
+                Board tempBoard = this.rootBoard;
+                while (!((tempBoard.getNext()).equals(oldBoard))) {
+                    if (tempBoard.hasNext()) {
+                        tempBoard = (Board)tempBoard.getNext();
+                    }
+                    else {  // tempBoard does not have a next and oldBoard was not found
+                        return;     // we have nothing to remove.
+                    }
+                }
+                // tempBoard is pointing to oldBoard
+                tempBoard = (Board)tempBoard.getPrev(); 
+                tempBoard.setNext(tempBoard.getNext().getNext());
+            }
+        }
+        catch (NullPointerException e) {
+            // This shouldn't happen but it probably will when we least expect it.
+            // As a result of reachig an error, do nothing?
         }
     }
-
-    boolean changePassword(String oldPassProvided, String newPassword) {
-        if (oldPassProvided.equals(this.password)) {
-            this.password = newPassword;
-            return true;
-        }
-        else
-            return false;
-    }
     
-    boolean verifyPassword(String passProvided) {
-        // like logging in. See if the password provided matches the one for this user. Maybe include a counter to prevent too many attempts?
-        if (passProvided.equals(this.password)) 
-            return true;
-        else
-            return false;
-    }
-    
-    public static void userNameReq(){
+    private static void userNameReq(){
             System.out.println("Please enter a user name:  ");
             System.out.println("Hint: Username must be of length 8 with both letters and numbers");
     }
-    public static void passwordReq(){
+    
+    private static void passwordReq(){
             System.out.println("Please enter a password:  ");
             System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
     }
-    public static String Name() { 
+    
+    private static String Name() { 
 	@SuppressWarnings("resource")
 	Scanner create = new Scanner(System.in);
 	String userName1 = create.nextLine();
@@ -107,7 +103,7 @@ public class User {
 	return userName1;		
     }
     
-    public static String newUserCheck(String userName) { 
+    private static String newUserCheck(String userName) { 
         File file = new File("UsersData.txt");
 	Scanner scanner;
 	try {
@@ -140,7 +136,7 @@ public class User {
 	return userName;
     } 
 
-    public static boolean userCheck(String userName, String password) { 
+    private static boolean userCheck(String userName, String password) { 
     File file = new File("UsersData.txt");
 	Scanner fscanner;
 	try {
@@ -173,7 +169,7 @@ public class User {
 	return false;
     } 
     
-    public static String Password() {		
+    private static String Password() {		
         @SuppressWarnings("resource")
 	Scanner create = new Scanner(System.in);
 	String userPassword2 = create.nextLine();
@@ -187,9 +183,7 @@ public class User {
 	return userPassword2;	
     }
     
-    private static final String FILENAME = "UsersData.txt";
-    
-    public static String loginSequence() {
+    private static String loginSequence() {
         @SuppressWarnings("resource")
 	Scanner loginScanner = new Scanner(System.in);
         System.out.println("Are you a returning user? (Y/n): ");
@@ -267,11 +261,11 @@ public class User {
         return "Invalid_Login";
     }
     
-    void loadData() {
+    private static void loadData() {
         // loadData() loads data from file "User.<username>.txt" located in the same folder as the app
         // ***Would be a good idea to save as not a .txt and also encryption, if time allows
         String userDataFile = "User.";
-        userDataFile += this.name;
+        userDataFile += name;
         userDataFile += ".txt";
         String nextLine = "";
         Board currBoard = null;
@@ -287,7 +281,7 @@ public class User {
                     // assume we are dealing with a new Board
                     if ((nextLine = buffReader.readLine()) != null) {
                         currBoard = new Board(nextLine);
-                        this.addBoard(currBoard);
+                        addBoard(currBoard);
                     }
                 }
                 else if (nextLine.equals("%*%NEWLIST%*%")) {
@@ -318,7 +312,7 @@ public class User {
         catch(FileNotFoundException ex) {
             // no save file found for User so load a blank Board
             currBoard = new Board("First Board (default name)");
-            this.addBoard(currBoard);
+            addBoard(currBoard);
         }
         catch(IOException ex) {
             System.out.println("Error reading file '"+ userDataFile + "'");                  
@@ -328,12 +322,12 @@ public class User {
         if (currBoard == null) {
             //no boards were found in the save file, so we need to create a blank one
             currBoard = new Board("First Board (default name)");
-            this.addBoard(currBoard);
+            addBoard(currBoard);
         }
     }
     
     /*
-    void saveData() {
+    private static void saveData() {
         // Save the data for this User.
     
     }
