@@ -316,12 +316,14 @@ public class User {
             buffReader.close();
         }  
         catch(FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + userDataFile + "'");                
+            // no save file found for User so load a blank Board
+            currBoard = new Board("First Board (default name)");
+            this.addBoard(currBoard);
         }
         catch(IOException ex) {
             System.out.println("Error reading file '"+ userDataFile + "'");                  
             // Or we could just do this: 
-            // ex.printStackTrace();
+            ex.printStackTrace();
         }
         if (currBoard == null) {
             //no boards were found in the save file, so we need to create a blank one
@@ -330,4 +332,10 @@ public class User {
         }
     }
     
+    /*
+    void saveData() {
+        // Save the data for this User.
+    
+    }
+    */
 }
