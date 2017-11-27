@@ -298,30 +298,32 @@ public class User {
         String userDataFile = "User.";
         userDataFile += this.name;
         userDataFile += ".txt";
-        String nextLine = "";
+        String nextEncrypt = "";
         Board currBoard = null;
         List currList = null;
         Card currCard = null;
-        //BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        //textEncryptor.setPassword(encryptionKey);
-        //String plainText = textEncryptor.decrypt(myEncryptedText);
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(encryptionKey);
+        String nextDecrypt = "";
         try {
             FileReader fileReader = new FileReader(userDataFile);
             BufferedReader buffReader = new BufferedReader(fileReader);
-            
-            while((nextLine = buffReader.readLine()) != null) {
-                switch (nextLine) {
+            while((nextEncrypt = buffReader.readLine()) != null) {
+                nextDecrypt = textEncryptor.decrypt(nextEncrypt);
+                switch (nextDecrypt) {
                     case "%*%NEWBOARD%*%":
                         // assume we are dealing with a new Board
-                        if ((nextLine = buffReader.readLine()) != null) {
-                            currBoard = new Board(nextLine);
+                        if ((nextEncrypt = buffReader.readLine()) != null) {
+                            nextDecrypt = textEncryptor.decrypt(nextEncrypt);
+                            currBoard = new Board(nextDecrypt);
                             this.addBoard(currBoard);           // add this Board to the User
                         }
                         break;
                     case "%*%NEWLIST%*%":
                         // assume we are dealing with a new List
-                        if ((nextLine = buffReader.readLine()) != null) {
-                            currList = new List(nextLine);
+                        if ((nextEncrypt = buffReader.readLine()) != null) {
+                            nextDecrypt = textEncryptor.decrypt(nextEncrypt);
+                            currList = new List(nextDecrypt);
                             if (currBoard != null) {
                                 currBoard.addList(currList);
                             }
@@ -332,7 +334,8 @@ public class User {
                         break;
                     default:
                         // probably a Card
-                        currCard = new Card(nextLine);
+                        nextDecrypt = textEncryptor.decrypt(nextEncrypt);
+                        currCard = new Card(nextDecrypt);
                         if (currBoard != null && currList != null) {
                             currList.addCard(currCard);
                         }
