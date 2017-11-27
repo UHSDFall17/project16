@@ -24,6 +24,10 @@ public class User {
         this.rootBoard = null;
     }
     
+    public static User getUser() {
+        return singleton;
+    }
+    
     public static User UserFactory() {
         if (singleton == null) {                        // check if singleton is already populated, if not allow a login attempt
             String uName = loginSequence();             // verifies User credentials and returns the User's name if legitimate
@@ -38,8 +42,12 @@ public class User {
         return singleton;
     }
     
-    public static User getUser() {
-        return singleton;
+    public static void LogOutFactory() {
+        if (singleton != null) {
+            singleton.saveData();   // save exiting User's data to their save file
+            singleton = null;       // set singleton null to remove data from exiting User
+        }
+        // if singleton is null we don't have to do anything
     }
     
     public Board getRootBoard() {
@@ -280,7 +288,7 @@ public class User {
         // loadData() is not static despite use of Singleton because rootBoard belongs to an individual
         // and not the class. When a User logs out we can set singleton = null instead of deleting 
         // all the loaded Boards.
-        // ***Would be a good idea to encrypt on save and decrypt on read, if time allows
+        // ***Would be a good idea to encrypt on save and decrypt on load, if time allows
         String userDataFile = "User.";
         userDataFile += this.name;
         userDataFile += ".txt";
@@ -294,34 +302,36 @@ public class User {
             BufferedReader buffReader = new BufferedReader(fileReader);
             
             while((nextLine = buffReader.readLine()) != null) {
-                if (nextLine.equals("%*%NEWBOARD%*%")) {
-                    // assume we are dealing with a new Board
-                    if ((nextLine = buffReader.readLine()) != null) {
-                        currBoard = new Board(nextLine);
-                        this.addBoard(currBoard);           // add this Board to the User
-                    }
-                }
-                else if (nextLine.equals("%*%NEWLIST%*%")) {
-                    // assume we are dealing with a new List
-                    if ((nextLine = buffReader.readLine()) != null) {
-                        currList = new List(nextLine);
-                        if (currBoard != null) {
-                            currBoard.addList(currList);
+                switch (nextLine) {
+                    case "%*%NEWBOARD%*%":
+                        // assume we are dealing with a new Board
+                        if ((nextLine = buffReader.readLine()) != null) {
+                            currBoard = new Board(nextLine);
+                            this.addBoard(currBoard);           // add this Board to the User
                         }
-                        else {
-                            // there is no board to add this to. What do?
+                        break;
+                    case "%*%NEWLIST%*%":
+                        // assume we are dealing with a new List
+                        if ((nextLine = buffReader.readLine()) != null) {
+                            currList = new List(nextLine);
+                            if (currBoard != null) {
+                                currBoard.addList(currList);
+                            }
+                            else {
+                                // there is no board to add this to. What do?
+                            }
                         }
-                    }
-                }
-                else {
-                    // probably a Card
-                    currCard = new Card(nextLine);
-                    if (currBoard != null && currList != null) {
+                        break;
+                    default:
+                        // probably a Card
+                        currCard = new Card(nextLine);
+                        if (currBoard != null && currList != null) {
                             currList.addCard(currCard);
                         }
                         else {
                             // there is no board/list to add this to. What do?
-                        }                   
+                        } 
+                        break;
                 }
             }
             buffReader.close();
@@ -353,10 +363,20 @@ public class User {
         }
     }
     
-    /*
+
     private static void saveData() {
         // Save the data for this User.
-    
+        // saveData() saves data to file "User.<username>.txt" located in the same folder as the app
+        // saveData() is not static despite use of Singleton because rootBoard belongs to an individual
+        // and not the class. When a User logs out we can set singleton = null instead of deleting 
+        // all the loaded Boards.
+        // ***Would be a good idea to encrypt on save and decrypt on load, if time allows
+        String userDataFile = "User.";
+        userDataFile += this.name;
+        userDataFile += ".txt";
+        String nextLine = "";
+        Board currBoard = null;
+        List currList = null;
+        Card currCard = null;
     }
-    */
 }
