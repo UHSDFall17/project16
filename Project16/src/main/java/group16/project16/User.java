@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import org.jasypt.util.text.BasicTextEncryptor;    // jasypt is an encryption/decryption library. Inluded in Maven dependencies.
 
 
 public class User {
@@ -18,6 +19,7 @@ public class User {
     //private Corporation myCorp;
     private static User singleton = new User();
     private static final String FILENAME = "UsersData.txt"; // where User login data is stored
+    private static final String encryptionKey = "totes1not2the3password";   // used with jasypt BasicTextEncryptor
     
     private User() {
         // using Singleton design pattern to allow only one User at a time (per instance of application)
@@ -46,10 +48,9 @@ public class User {
     public static void LogOutFactory() {
         if (singleton.name != null) {
             singleton.saveData();           // save exiting User's data to their save file
-            singleton.name = null;          // set singleton.name null indicating it is empty
-            singleton.rootBoard = null;     // set singleton.rootBoard null indicating it is empty
         }
-        // if singleton is null we don't have to do anything
+        singleton.name = null;          // set singleton.name null indicating it is empty
+        singleton.rootBoard = null;     // set singleton.rootBoard null indicating it is empty
     }
     
     public Board getRootBoard() {
@@ -237,6 +238,9 @@ public class User {
                     File file = new File(saveFileName);
                     FileWriter saveFile;
                     saveFile = new FileWriter(file);
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
                     return userName;
                 }
                 catch (IOException e) {
@@ -298,7 +302,9 @@ public class User {
         Board currBoard = null;
         List currList = null;
         Card currCard = null;
-        
+        //BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        //textEncryptor.setPassword(encryptionKey);
+        //String plainText = textEncryptor.decrypt(myEncryptedText);
         try {
             FileReader fileReader = new FileReader(userDataFile);
             BufferedReader buffReader = new BufferedReader(fileReader);
@@ -345,6 +351,9 @@ public class User {
                     File file = new File(saveFileName);
                     FileWriter saveFile;
                     saveFile = new FileWriter(file);
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
                     //no boards were found in the save file, so we need to create a blank one
                     currBoard = new Board("First Board (default name)");
                     this.addBoard(currBoard);
@@ -380,6 +389,62 @@ public class User {
         Board currBoard = null;
         List currList = null;
         Card currCard = null;
-        
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(encryptionKey);
+        String myEncryptedText = "";    //textEncryptor.encrypt(myText);
+                
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(userDataFile);    // we want to overwrite what is there with what now exists
+            bw = new BufferedWriter(fw);
+            // write everything to file, encrypted
+            currBoard = this.rootBoard;
+            while (currBoard != null) {     // walk through Boards for this User 
+                nextLine = "%*%NEWBOARD%*%";
+                myEncryptedText = textEncryptor.encrypt(nextLine);
+                bw.write(myEncryptedText);
+                bw.newLine();
+                nextLine = currBoard.getName();
+                myEncryptedText = textEncryptor.encrypt(nextLine);
+                bw.write(myEncryptedText);
+                bw.newLine();
+                currList = currBoard.getHead();
+                while (currList != null) {  // walk through Lists for this Board
+                    nextLine = "%*%NEWLIST%*%";
+                    myEncryptedText = textEncryptor.encrypt(nextLine);
+                    bw.write(myEncryptedText);
+                    bw.newLine();
+                    nextLine = currList.getName();
+                    myEncryptedText = textEncryptor.encrypt(nextLine);
+                    bw.write(myEncryptedText);
+                    bw.newLine();
+                    currCard = currList.getHead();
+                    while (currCard != null) {      // walk through Cards for this List
+                        nextLine = currCard.getText();
+                        myEncryptedText = textEncryptor.encrypt(nextLine);
+                        bw.write(myEncryptedText);
+                        bw.newLine();
+                        currCard = (Card)currCard.getNext();
+                    }
+                    currList = (List)currList.getNext();
+                }
+                currBoard = (Board)currBoard.getNext();
+            }
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        } 
+        finally {
+            try {
+                if (bw != null)
+                    bw.close();
+                if (fw != null)
+                    fw.close();
+            } 
+            catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }  
     }
 }
