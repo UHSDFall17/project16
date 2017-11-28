@@ -32,6 +32,10 @@ public class User {
         return singleton;
     }
     
+    public static String getUserName() {
+        return singleton.name;
+    }
+    
     public static User UserFactory() {
         if (singleton.name == null ) {                  // check if singleton is already populated, if not allow a login attempt
             String uName = loginSequence();             // verifies User credentials and returns the User's name if legitimate
