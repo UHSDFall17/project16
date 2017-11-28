@@ -1,11 +1,11 @@
 language: java
-script: mvn -f Project16/pom.xml clean compile -DskiptTests cobertura:cobertura
-        
- after_success:
-  - bash <(curl -s https://codecov.io/bash)   
+script: mvn -f Project16/pom.xml clean compile -DskiptTests cobertura:cobertura  
     
 notifications:
   email:
     - rlfarrell@uh.edu
     - cdcupples@uh.edu
     - ztu3@uh.edu
+    
+after_success:
+  - bash <(curl -s https://codecov.io/bash) 
