@@ -15,7 +15,13 @@ public class Corporation {
     Corporation() {
         name = null;
         password = null;
-        isPremium = false;
+        isPremium = true;
+    }
+    
+    Corporation(String cName, String cPass) {
+        name = cName;
+        password = cPass;
+        isPremium = true;
     }
     
     boolean premiumStatus() {
