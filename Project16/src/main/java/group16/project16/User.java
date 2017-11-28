@@ -14,8 +14,8 @@ import org.jasypt.util.text.BasicTextEncryptor;    // jasypt is an encryption/de
 
 public class User {
 		
-    private String name;
-    private Board rootBoard;
+    private static String name;
+    private static Board rootBoard;
     //private Corporation myCorp;
     private static User singleton = new User();
     private static final String FILENAME = "UsersData.txt"; // where User login data is stored
@@ -23,8 +23,8 @@ public class User {
     
     private User() {
         // using Singleton design pattern to allow only one User at a time (per instance of application)
-        this.name = null;
-        this.rootBoard = null;
+        name = null;
+        rootBoard = null;
         //this.myCorp = null;
     }
     
@@ -33,15 +33,15 @@ public class User {
     }
     
     public static String getUserName() {
-        return singleton.name;
+        return name;
     }
     
-    public static User UserFactory() {
-        if (singleton.name == null ) {                  // check if singleton is already populated, if not allow a login attempt
-            String uName = loginSequence();             // verifies User credentials and returns the User's name if legitimate
+    public static User UserFactory(boolean returnUser, String uName, String uPass) {
+        if (name == null ) {                  // check if singleton is already populated, if not allow a login attempt
+            String verifiedName = loginSequence(returnUser, uName, uPass);             // verifies User credentials and returns the User's name if legitimate
             if (!uName.equals("Invalid_Login")) {       // if we don't get an invalid login
                 // login is valid, finish building instance of singleton User
-                singleton.name = uName;                 // set the User's name
+                name = verifiedName;          // set the User's name
                 singleton.loadData();                   // attempt to load data for that user
             }
         }
@@ -49,26 +49,26 @@ public class User {
         return singleton;
     }
     
-    public static void LogOutFactory() {
-        if (singleton.name != null) {
+    public static void LogOutFactory(boolean saveBoards) {
+        if (name != null && saveBoards) {
             singleton.saveData();           // save exiting User's data to their save file
         }
-        singleton.name = null;          // set singleton.name null indicating it is empty
-        singleton.rootBoard = null;     // set singleton.rootBoard null indicating it is empty
+        name = null;          // set singleton.name null indicating it is empty
+        rootBoard = null;     // set singleton.rootBoard null indicating it is empty
     }
     
-    public Board getRootBoard() {
+    public static Board getRootBoard() {
         // Keep things simple. This method is sufficent.
-        return this.rootBoard;
+        return rootBoard;
     }
     
     public void addBoard(Board newBoard) {
         try {
-            if (this.rootBoard == null) {
-                this.rootBoard = newBoard;
+            if (rootBoard == null) {
+                rootBoard = newBoard;
             }
             else {
-                Board tempBoard = this.rootBoard;
+                Board tempBoard = rootBoard;
                 while (tempBoard.hasNext()) {
                     tempBoard = (Board)tempBoard.getNext();
                 }
@@ -84,11 +84,11 @@ public class User {
         
     public void removeBoard(Board oldBoard) {
         try {
-            if (this.rootBoard.equals(oldBoard)) {
-                this.rootBoard = (Board)this.rootBoard.getNext();
+            if (rootBoard.equals(oldBoard)) {
+                rootBoard = (Board)rootBoard.getNext();
             }
             else {
-                Board tempBoard = this.rootBoard;
+                Board tempBoard = rootBoard;
                 while (!((tempBoard.getNext()).equals(oldBoard))) {
                     if (tempBoard.hasNext()) {
                         tempBoard = (Board)tempBoard.getNext();
@@ -108,17 +108,17 @@ public class User {
         }
     }
     
-    private static void userNameReq(){
+/*    private static void userNameReq(){
             System.out.println("Please enter a user name:  ");
             System.out.println("Hint: Username must be of length 8 with both letters and numbers");
-    }
+    }*/
     
-    private static void passwordReq(){
+/*    private static void passwordReq(){
             System.out.println("Please enter a password:  ");
             System.out.println("Hint: Password must be of length 8 with both letter/s,special character/s, and number/s");
-    }
+    }*/
     
-    private static String Name() { 
+/*    private static String Name() { 
 	@SuppressWarnings("resource")
 	Scanner create = new Scanner(System.in);
 	String userName1 = create.nextLine();
@@ -130,7 +130,7 @@ public class User {
             userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
 	}
 	return userName1;		
-    }
+    }*/
     
     private static String newUserCheck(String userName) { 
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
@@ -138,23 +138,23 @@ public class User {
         File file = new File("UsersData.txt");
 	Scanner scanner;
 	try {
-	    scanner = new Scanner(file).useDelimiter( " ");
+	    scanner = new Scanner(file).useDelimiter(" ");
 	    while (scanner.hasNext()) {
 	        String lineFromFile = textEncryptor.decrypt(scanner.nextLine());   // deccrypt text from file
 	        if (lineFromFile.contains(userName)) {
-                    System.out.println(userName + " is already in use, please try again");
-	            userNameReq();
-                    @SuppressWarnings("resource")
-                    Scanner create = new Scanner(System.in);
-                    userName = create.nextLine();
-                    String userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
+                    //System.out.println(userName + " is already in use, please try again");
+	            //userNameReq();
+                    //@SuppressWarnings("resource")
+                    //Scanner create = new Scanner(System.in);
+                    userName = userName + "1";//create.nextLine();
+                    /*String userValidate = "((?=.*\\d)(?=.*[a-zA-Z])).{8,}";
                     while (userName.matches(userValidate) == false){
-			System.out.println("Invalid username...please try again");
-			userNameReq();
+			//System.out.println("Invalid username...please try again");
+			//userNameReq();
                         @SuppressWarnings("resource")
 			Scanner create1 = new Scanner(System.in);
 			userName = create1.nextLine();
-                    }
+                    }*/
 		}
 		else{
 		
@@ -173,8 +173,8 @@ public class User {
         File file = new File("UsersData.txt");
 	Scanner fscanner;
 	try {
-            int tries = 0;
-            while (tries++ < 3) {
+            //int tries = 0;
+            //while (tries++ < 3) {
                 fscanner = new Scanner(file).useDelimiter(" ");
                 while (fscanner.hasNext()) {
                     String lineFromFile = textEncryptor.decrypt(fscanner.nextLine());   // deccrypt text from file
@@ -187,14 +187,14 @@ public class User {
                         }
                     }
                 }
-                System.out.println("Username and Password do not match! Please try again.");
-                userNameReq();
-                userName = Name();
-                passwordReq();
-                password = Password();
-            }
-            System.out.println("Too many failed attempts!!! Terminating program...");
-            System.exit(0);
+                //System.out.println("Username and Password do not match! Please try again.");
+                //userNameReq();
+                //userName = Name();
+                //passwordReq();
+                //password = Password();
+            //}
+            //System.out.println("Too many failed attempts!!! Terminating program...");
+            //System.exit(0);
         } 
 	catch (IOException e) {
             // ???
@@ -202,7 +202,7 @@ public class User {
 	return false;
     } 
     
-    private static String Password() {		
+/*    private static String Password() {		
         @SuppressWarnings("resource")
 	Scanner create = new Scanner(System.in);
 	String userPassword2 = create.nextLine();
@@ -214,22 +214,22 @@ public class User {
             userPassword2 = create.nextLine();
 	}
 	return userPassword2;	
-    }
+    }*/
     
-    private static String loginSequence() {
-        @SuppressWarnings("resource")
+    private static String loginSequence(boolean returnUser, String uName, String uPass) {
+        //@SuppressWarnings("resource")
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPassword(encryptionKey);
-	Scanner loginScanner = new Scanner(System.in);
-        System.out.println("Are you a returning user? (Y/n): ");
-        String response = loginScanner.nextLine();
-        if (response.equalsIgnoreCase("n")) {
+	//Scanner loginScanner = new Scanner(System.in);
+        //System.out.println("Are you a returning user? (Y/n): ");
+        //String response = loginScanner.nextLine();
+        if (!returnUser /*response.equalsIgnoreCase("n")*/) {
             // new user login sequence (set up new user)
-            userNameReq();
-            String userName = Name();
+            //userNameReq();
+            String userName = uName;   //Name();
             String userName2 = newUserCheck(userName);
-            passwordReq();
-            String userPassword = Password();
+            //passwordReq();
+            String userPassword = uPass;    //Password();
             // now write the new user info to the UsersData file
             BufferedWriter bw = null;
             FileWriter fw = null;
@@ -240,8 +240,8 @@ public class User {
                 bw = new BufferedWriter(fw);
                 bw.append(System.lineSeparator());
                 bw.write(contentEncrypt);
-                System.out.println("User addded successfully!");
-                System.out.println("You are now logged in");
+                //System.out.println("User addded successfully!");
+                //System.out.println("You are now logged in");
                 // also need to create a save file for the new user
                 try {
                     String saveFileName = "User." + userName + ".txt";
@@ -275,24 +275,24 @@ public class User {
                 }
             }   
         }
-        else if (response.equalsIgnoreCase("y")) {
+        else if (returnUser /*response.equalsIgnoreCase("y")*/) {
             // returning user login sequence
-            userNameReq();
-            String userName = Name();
-            passwordReq();
-            String userPassword = Password();
+            //userNameReq();
+            String userName = uName;  //Name();
+            //passwordReq();
+            String userPassword = uPass;      //Password();
             if (userCheck(userName, userPassword)) {
                 // if true we have a valid login
-                System.out.println("Successful Login!!!");
+                //System.out.println("Successful Login!!!");
                 return userName;
             } 
             else {
-                System.out.println("Unsuccessful login... :(");
+                //System.out.println("Unsuccessful login... :(");
             }
         }
         else {
             // unexpected response
-            System.out.println("Unexpected response... Please try again.");
+            //System.out.println("Unexpected response... Please try again.");
         }
 		
         // if we reached this point, something didn't work
@@ -412,7 +412,7 @@ public class User {
             fw = new FileWriter(userDataFile);    // we want to overwrite what is there with what now exists
             bw = new BufferedWriter(fw);
             // write everything to file, encrypted
-            currBoard = this.rootBoard;
+            currBoard = rootBoard;
             while (currBoard != null) {     // walk through Boards for this User 
                 nextLine = "%*%NEWBOARD%*%";
                 myEncryptedText = textEncryptor.encrypt(nextLine);
