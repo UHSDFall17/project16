@@ -1,5 +1,5 @@
 language: java
-script: mvn -f Project16/pom.xml clean compile -DskiptTests cobertura:cobertura  
+script: mvn -f Project16/pom.xml cobertura:cobertura clean compile -DskiptTests 
     
 notifications:
   email:
