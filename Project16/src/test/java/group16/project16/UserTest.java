@@ -61,6 +61,9 @@ public class UserTest {
 
     /**
      * Test 1 of UserFactory method, of class User.
+     * Test file built using the same encryption type and password. 
+     * Script for building files omitted from GitHub since they aren't part of the 
+     * software.
     */
     @Test
     public void test1UserFactory() {
@@ -70,6 +73,34 @@ public class UserTest {
         assertEquals(expResult, resultName);
     } 
 
+    /**
+     * Test 2 of UserFactory method, of class User.
+     * Test file built using the same encryption type and password. 
+     * Script for building files omitted from GitHub since they aren't part of the 
+     * software.
+    */
+    @Test
+    public void test2UserFactory() {
+        User.UserFactory(true, "testName1", "password1!");
+        String expResult = "Board1";
+        String resultBoardName = User.getRootBoard().getName();
+        assertEquals(expResult, resultBoardName);
+    } 
+    
+    /**
+     * Test 3 of UserFactory method, of class User.
+     * Test file built using the same encryption type and password. 
+     * Script for building files omitted from GitHub since they aren't part of the 
+     * software.
+    */
+    @Test
+    public void test3UserFactory() {
+        User.UserFactory(true, "testName1", "password1!");
+        String expResult = "Board2";
+        String resultBoardName = ((Board)User.getRootBoard().getNext()).getName();
+        assertEquals(expResult, resultBoardName);
+    }    
+    
     /**
      * Test of LogOutFactory method, of class User.
     */ 
@@ -85,30 +116,41 @@ public class UserTest {
      */
     @Test
     public void testGetRootBoard() {
-        User instance = User.getUser();
         Board expResult = null;
-        Board result = instance.getRootBoard();
+        Board result = User.getRootBoard();
         assertEquals(expResult, result);
     }
 
     /**
      * Test of addBoard method, of class User.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testAddBoard() {
-        Board newBoard = null;
-        User instance = null;
+        Board newBoard = new Board("testBoard");
+        // User with name "testName2" and password "password2!" exists in the 
+        // login data file but its User save file is empty indicating they 
+        // have not saved any data.
+        User instance = User.UserFactory(true, "testName2", "password2!");
         instance.addBoard(newBoard);
+        Board expResult = newBoard;
+        Board result = (Board)User.getRootBoard().getNext();
+        assertEquals(expResult, result);
     }
 
     /**
      * Test of removeBoard method, of class User.
      */
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testRemoveBoard() {
-        Board oldBoard = null;
-        User instance = null;
-        instance.removeBoard(oldBoard);
+        // User with name "testName2" and password "password2!" exists in the 
+        // login data file but its User save file is empty indicating they
+        // havve not saved any data.
+        User instance = User.UserFactory(true, "testName2", "password2!");
+        Board expResult = User.getRootBoard();
+        // remove rootBoard from User
+        instance.removeBoard(User.getRootBoard());
+        Board result = User.getRootBoard();
+        assertNotEquals(expResult, result);
     }
 
 }
