@@ -1,9 +1,8 @@
 language: java
-script: mvn -f Project16/pom.xml cobertura:cobertura clean compile -DskiptTests 
+script: mvn -f Project16/pom.xml clean compile -DskiptTests 
     
 notifications:
   email:
     - rlfarrell@uh.edu
     - cdcupples@uh.edu
     - ztu3@uh.edu
-    
