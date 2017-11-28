@@ -175,10 +175,11 @@ public class User {
 	try {
             //int tries = 0;
             //while (tries++ < 3) {
-                fscanner = new Scanner(file).useDelimiter(" ");
+                fscanner = new Scanner(file);//.useDelimiter(" ");
                 while (fscanner.hasNext()) {
-                    String lineFromFile = textEncryptor.decrypt(fscanner.nextLine());   // deccrypt text from file
-                    String[] splitLine = lineFromFile.split("\\s+");
+                    String lineFromFile = fscanner.next();   // deccrypt text from file
+                    String decryptedLine = textEncryptor.decrypt(lineFromFile);
+                    String[] splitLine = decryptedLine.split("\\s+");
                     if (splitLine[0].equals(userName)) {
                         // check if password matches found username
                         if (splitLine[1].equals(password)) {
