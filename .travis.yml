@@ -7,5 +7,3 @@ notifications:
     - cdcupples@uh.edu
     - ztu3@uh.edu
     
-after_success:
-  - bash <(curl -s https://codecov.io/bash) 
