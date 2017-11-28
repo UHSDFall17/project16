@@ -36,6 +36,7 @@ public class UserTest {
     
     @After
     public void tearDown() {
+        User.LogOutFactory(false);
     }
 
     /**
@@ -59,29 +60,25 @@ public class UserTest {
     }
 
     /**
-     * Test of UserFactory method, of class User.
-    
+     * Test 1 of UserFactory method, of class User.
+    */
     @Test
-    public void testUserFactory() {
-        String testInputs1 = "Y" + System.lineSeparator() + "testName1" + System.lineSeparator() + "password1!";
-        ByteArrayInputStream in = new ByteArrayInputStream(testInputs1.getBytes());
-        System.setIn(in);
-        User testUser = User.UserFactory();
+    public void test1UserFactory() {
+        User.UserFactory(true, "testName1", "password1!");
         String expResult = "testName1";
         String resultName = User.getUserName();
         assertEquals(expResult, resultName);
-        System.setIn(System.in);
-    } */
+    } 
 
     /**
      * Test of LogOutFactory method, of class User.
-     
+    */ 
     @Test
     public void testLogOutFactory() {
-        User testUser = User.UserFactory();
-        User.LogOutFactory();
-        assertEquals(null, testUser.getRootBoard());
-    }*/
+        User.UserFactory(true, "testName1", "password1!");
+        User.LogOutFactory(true);
+        assertEquals(null, User.getRootBoard());
+    }
 
     /**
      * Test of getRootBoard method, of class User.
