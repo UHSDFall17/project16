@@ -1,6 +1,5 @@
 language: java
-script: mvn -f Project16/pom.xml clean compile -DskiptTests
-        mvn cobertura:cobertura
+script: mvn -f Project16/pom.xml clean compile -DskiptTests cobertura:cobertura
         
  after_success:
   - bash <(curl -s https://codecov.io/bash)   
