@@ -69,7 +69,8 @@ public class CorporationTest {
     }
 
     /**
-     * Test of changePasswordTrue method, of class Corporation.
+     * Test of changePassword method, of class Corporation.
+     * Testing true.
      */
     @Test
     public void testChangePasswordTrue() {
@@ -82,7 +83,8 @@ public class CorporationTest {
     }
 
     /**
-     * Test of changePasswordFalse method, of class Corporation.
+     * Test of changePassword method, of class Corporation.
+     * Testing false.
      */
     @Test
     public void testChangePasswordFalse() {
@@ -95,7 +97,8 @@ public class CorporationTest {
     }    
 
     /**
-     * Test of verifyPasswordTrue method, of class Corporation.
+     * Test of verifyPassword method, of class Corporation.
+     * Testing true.
      */
     @Test
     public void testVerifyPasswordTrue() {
@@ -107,7 +110,8 @@ public class CorporationTest {
     }
     
     /**
-     * Test of verifyPasswordFalse method, of class Corporation.
+     * Test of verifyPassword method, of class Corporation.
+     * Testing false.
      */
     @Test
     public void testVerifyPasswordFalse() {
