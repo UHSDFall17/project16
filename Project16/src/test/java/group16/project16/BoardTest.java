@@ -58,7 +58,7 @@ public class BoardTest {
 
     /**
      * Test of addList method, of class Board.
-     */
+     **/
     @Test
     public void testAddList() {
         List newList = new List();
